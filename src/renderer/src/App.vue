@@ -9,20 +9,36 @@ import TabBar from './components/TabBar.vue'
 import HistoryView from './components/HistoryView.vue'
 import StatsView from './components/StatsView.vue'
 import SettingsView from './components/SettingsView.vue'
+import CloseDialog from './components/CloseDialog.vue'
 
 const settings = useSettingsStore()
 const activeTab = ref<'timer' | 'history' | 'stats' | 'settings'>('timer')
+const showCloseDialog = ref(false)
 
 useTimer()
 
 onMounted(() => {
   settings.applyTheme()
 })
+
+function openCloseDialog() {
+  showCloseDialog.value = true
+}
+
+function handleMinimize() {
+  showCloseDialog.value = false
+  window.electronAPI.closeToTray()
+}
+
+function handleQuit() {
+  showCloseDialog.value = false
+  window.electronAPI.quit()
+}
 </script>
 
 <template>
   <div class="app-container">
-    <TitleBar />
+    <TitleBar @request-close="openCloseDialog" />
     <main class="content">
       <template v-if="activeTab === 'timer'">
         <TimerCircle />
@@ -33,5 +49,10 @@ onMounted(() => {
       <SettingsView v-else-if="activeTab === 'settings'" />
     </main>
     <TabBar v-model:activeTab="activeTab" />
+    <CloseDialog
+      :visible="showCloseDialog"
+      @minimize="handleMinimize"
+      @close="handleQuit"
+    />
   </div>
 </template>

@@ -1,6 +1,8 @@
 <script setup lang="ts">
+const emit = defineEmits<{ 'request-close': [] }>()
+
 function minimize() { window.electronAPI.minimize() }
-function close() { window.electronAPI.closeToTray() }
+function close() { emit('request-close') }
 </script>
 
 <template>
