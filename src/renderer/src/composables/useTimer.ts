@@ -6,19 +6,15 @@ import { useSound } from './useSound'
 export function useTimer() {
   const timer = useTimerStore()
   const settings = useSettingsStore()
-  const { playBeep } = useSound()
+  const { play } = useSound()
 
-  let wasRunning = false
+  let prevRemaining = timer.timeRemaining
 
   watch(() => timer.timeRemaining, (remaining) => {
-    if (remaining === 0 && wasRunning && settings.soundEnabled) {
-      playBeep()
+    if (remaining === 0 && prevRemaining > 0 && settings.soundEnabled) {
+      play(settings.soundType)
     }
-    wasRunning = remaining > 0 && timer.isRunning
-  })
-
-  watch(() => timer.isRunning, (running) => {
-    if (running) wasRunning = true
+    prevRemaining = remaining
   })
 
   return { timer }

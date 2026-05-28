@@ -88,6 +88,8 @@ export const useTimerStore = defineStore('timer', () => {
       completed: true
     })
 
+    const wasWork = sessionType.value === 'work'
+
     if (sessionType.value === 'work') {
       completedPomodoros.value++
       if (completedPomodoros.value % settings.longBreakInterval === 0) {
@@ -97,6 +99,10 @@ export const useTimerStore = defineStore('timer', () => {
       }
     } else {
       switchSession('work')
+    }
+
+    if (wasWork && settings.autoStartBreak) {
+      start()
     }
   }
 
