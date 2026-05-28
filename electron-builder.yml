@@ -2,14 +2,15 @@ appId: com.fanqie.pomodoro
 productName: Pomodoro Timer
 directories:
   buildResources: build
-  output: release
+  output: output_v2
 files:
-  - '!**/.vscode/*'
-  - '!src/*'
-  - '!electron.vite.config.ts'
-  - '!{.eslintrc.cjs,.prettierrc.yaml,CHANGELOG.md,README.md}'
-  - '!{.env,.env.*,.npmrc,pnpm-lock.yaml}'
-  - '!{tsconfig.json,tsconfig.node.json,tsconfig.web.json}'
+  - out/**/*
+  - package.json
+  - node_modules/pinia/**/*
+  - node_modules/pinia-plugin-persistedstate/**/*
+  - node_modules/vue/**/*
+  - node_modules/@vue/**/*
+asar: true
 win:
   executableName: pomodoro-timer
   icon: build/icon.ico
@@ -28,4 +29,3 @@ nsis:
 portable:
   artifactName: ${name}-${version}-portable.${ext}
 npmRebuild: false
-asar: true
