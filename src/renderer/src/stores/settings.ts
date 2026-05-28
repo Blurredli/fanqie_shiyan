@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
 export type SoundType = 'beep' | 'chime' | 'forest' | 'bowl' | 'piano'
+export type ThemeType = 'dark' | 'pure-black' | 'midnight' | 'warm' | 'light'
 
 export const useSettingsStore = defineStore('settings', () => {
   const workDuration = ref(25)
@@ -11,9 +12,9 @@ export const useSettingsStore = defineStore('settings', () => {
   const soundEnabled = ref(true)
   const soundType = ref<SoundType>('chime')
   const autoStartBreak = ref(false)
-  const theme = ref<'light' | 'dark'>('dark')
+  const theme = ref<ThemeType>('dark')
 
-  function setTheme(newTheme: 'light' | 'dark') {
+  function setTheme(newTheme: ThemeType) {
     theme.value = newTheme
     document.documentElement.setAttribute('data-theme', newTheme)
   }

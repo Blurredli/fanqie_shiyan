@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useSettingsStore, type SoundType } from '../stores/settings'
+import { useSettingsStore, type SoundType, type ThemeType } from '../stores/settings'
 import { useTimerStore } from '../stores/timer'
 import { useSound } from '../composables/useSound'
 import { watch } from 'vue'
@@ -14,6 +14,14 @@ const soundOptions: { key: SoundType; label: string; desc: string }[] = [
   { key: 'bowl',   label: '颂钵冥想', desc: '深沉共振泛音' },
   { key: 'forest', label: '森林鸟鸣', desc: '自然鸟鸣环境音' },
   { key: 'beep',   label: '经典蜂鸣', desc: '简短提示音' },
+]
+
+const themeOptions: { key: ThemeType; label: string; desc: string; bg: string; accent: string }[] = [
+  { key: 'dark',       label: '深蓝',     desc: '默认深色主题',    bg: '#1a1a2e', accent: '#e74c3c' },
+  { key: 'pure-black', label: '现代黑',   desc: '纯黑 OLED 友好',  bg: '#000000', accent: '#ff453a' },
+  { key: 'midnight',   label: '深蓝夜空', desc: '静谧深蓝色调',    bg: '#0d1b2a', accent: '#ef5350' },
+  { key: 'warm',       label: '暖色调',   desc: '温暖琥珀色',      bg: '#1c1612', accent: '#e67e22' },
+  { key: 'light',      label: '浅色',     desc: '明亮清爽',        bg: '#f5f5f5', accent: '#e74c3c' },
 ]
 
 function previewSound(type: SoundType) {
@@ -131,19 +139,21 @@ watch(() => [settings.workDuration, settings.breakDuration, settings.longBreakDu
         </div>
       </div>
 
-      <div class="setting-item toggle-item">
+      <div class="setting-item theme-item">
         <label class="setting-label">主题</label>
-        <div class="theme-switch">
-          <button
-            class="theme-btn"
-            :class="{ active: settings.theme === 'dark' }"
-            @click="settings.setTheme('dark')"
-          >深色</button>
-          <button
-            class="theme-btn"
-            :class="{ active: settings.theme === 'light' }"
-            @click="settings.setTheme('light')"
-          >浅色</button>
+        <div class="theme-grid">
+          <div
+            v-for="opt in themeOptions"
+            :key="opt.key"
+            class="theme-card"
+            :class="{ active: settings.theme === opt.key }"
+            @click="settings.setTheme(opt.key)"
+          >
+            <div class="theme-preview" :style="{ background: opt.bg, borderColor: settings.theme === opt.key ? opt.accent : 'var(--border-color)' }">
+              <div class="theme-preview-accent" :style="{ background: opt.accent }"></div>
+            </div>
+            <span class="theme-name">{{ opt.label }}</span>
+          </div>
         </div>
       </div>
     </div>
@@ -241,26 +251,68 @@ watch(() => [settings.workDuration, settings.breakDuration, settings.longBreakDu
   transform: translateX(20px);
 }
 
-.theme-switch {
+/* Theme selector */
+.theme-item {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+}
+
+.theme-grid {
   display: flex;
-  background: var(--border-color);
-  border-radius: 8px;
-  overflow: hidden;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
-.theme-btn {
-  border: none;
-  background: transparent;
-  padding: 6px 14px;
-  font-size: 13px;
-  color: var(--text-secondary);
+.theme-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
   cursor: pointer;
+  padding: 6px;
+  border-radius: 8px;
   transition: all 0.15s;
+  flex: 1;
+  min-width: 52px;
 }
 
-.theme-btn.active {
-  background: var(--accent-work);
-  color: #fff;
+.theme-card:hover {
+  background: rgba(128, 128, 128, 0.08);
+}
+
+.theme-preview {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  border: 2px solid var(--border-color);
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.15s;
+}
+
+.theme-card.active .theme-preview {
+  border-width: 2.5px;
+}
+
+.theme-preview-accent {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 8px;
+  border-radius: 0 0 8px 8px;
+}
+
+.theme-name {
+  font-size: 11px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.theme-card.active .theme-name {
+  color: var(--text-primary);
+  font-weight: 600;
 }
 
 /* Sound selector */
