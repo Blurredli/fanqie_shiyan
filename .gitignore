@@ -6,6 +6,7 @@ release_v120/
 out/
 output/
 output_v2/
+output_v3/
 build_output/
 build_v120/
 *.exe

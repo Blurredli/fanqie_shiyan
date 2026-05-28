@@ -2,7 +2,7 @@ appId: com.fanqie.pomodoro
 productName: Pomodoro Timer
 directories:
   buildResources: build
-  output: output_v2
+  output: output_v3
 files:
   - out/**/*
   - package.json
