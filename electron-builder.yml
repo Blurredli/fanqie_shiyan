@@ -2,7 +2,7 @@ appId: com.fanqie.pomodoro
 productName: Pomodoro Timer
 directories:
   buildResources: build
-  output: dist2
+  output: release
 files:
   - '!**/.vscode/*'
   - '!src/*'
