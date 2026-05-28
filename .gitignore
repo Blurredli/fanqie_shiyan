@@ -2,8 +2,14 @@ node_modules/
 dist/
 dist2/
 release/
+release_v120/
 out/
+output/
+output_v2/
+build_output/
+build_v120/
 *.exe
 *.nsis
 .DS_Store
 .vscode/
+*.cmd
